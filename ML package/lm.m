@@ -1,4 +1,4 @@
-function [theta, err, t] = lm(X, y, alpha, num_iters)
+function [theta,mse, t] = lm(X, y, alpha, num_iters)
 % Multivariate linear Regression
 %
 % Syntax: [theta, err, fit] = lm(X, y, theta, zero)
@@ -26,8 +26,7 @@ function [theta, err, t] = lm(X, y, alpha, num_iters)
         % Regression through Normal Equation
         hx = X*theta-y;
         theta = pinv(X' * X) * X' * y;
-        history = (hx'*hx)/m/2;
-
+        mse = mean(((X*theta) - y)).^2;
         %compute t statistic for regression line: 
         sigma = sum(y.^2);
         for i = 1:b
