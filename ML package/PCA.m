@@ -9,8 +9,11 @@ function output = PCA(Data)
     % cntr = output from normalise function to apply normalisation to new data
     % XV = new rotated Data. 
     
-    %[a,b] = size(Data);
-    % Center Data & normalize data on [0,1]
+    tab = istable(Data);
+    if tab == true
+        names = Data.Properties.VariableNames;
+        Data = table2array(Data);
+    end
     [X,cntr] = normalise(Data,'norm');
     
     % find covariance matrix
@@ -22,8 +25,11 @@ function output = PCA(Data)
     V = V(:,i);
     % PCA vectors are columns where the rows are 
     output.dev = cumsum(Dev)/sum(Dev)*100;
-    output.rotation = V;
     output.cntr = cntr;
     output.XV  = X*V;
-     
+
+    if tab == true
+        V = table(V,'rownames',names);
+    end
+    output.rotation = V;     
     end
