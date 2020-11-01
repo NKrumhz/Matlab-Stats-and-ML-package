@@ -1,6 +1,7 @@
 function [X,scales] = normalise(X, method)
 % Syntax: [X,scale] = normalise(X, method)
-%
+%Inputs
+% X = vector or matrix to be normalized 
 % methods:
 % norm = Center and scale to have mean 0 and standard deviation of 1. 
     %same as 'zscore' in base MATLAB function
@@ -15,6 +16,12 @@ function [X,scales] = normalise(X, method)
 % [2,n] matrix = where n is the number of columns, the first row is mu
     % and the second row is sigma in a standard score normalization equation
     % used to apply the same normalization on 2 different matricies of data.
+%
+%
+%Outputs: 
+% X = normalized vector / matrix 
+% scales = 2xn transformation applied to input data
+
 
 A(1) = ischar(method);
 A(2) = isstring(method);
