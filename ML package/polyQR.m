@@ -28,6 +28,10 @@ function [C, norm2] = polyQR(X, nd)
 
 %%
 [a,b] = size(X);
+if nd == 0
+    error('must be 1 or greater')
+end
+
 if b ==1
     l = nchoosek(b+nd,b)-1;
     xbar = mean(X);
@@ -40,5 +44,7 @@ if b ==1
     C = Q(:,2:l+1);
     norm2 = sum(abs(R .* alpha));
     norm2 = [1,norm2];
+else
+    
 end
 
