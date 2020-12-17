@@ -1,4 +1,4 @@
-function [out] = sumary(Arg, a, b)
+function [out] = audit(Arg, a, b)
 %to mimic the 'summary' function in R.
 % When feeding in numeric values this function will return the quantiles
 % specified with the standard statistics of min, median, mean, and max. 

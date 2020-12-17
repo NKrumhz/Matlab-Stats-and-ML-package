@@ -1,5 +1,5 @@
-function [X,scales] = normalise(X, method)
-% Syntax: [X,scale] = normalise(X, method)
+function [X,scales] = standardize(X, method)
+% Syntax: [X,scale] = standardize(X, method)
 %Inputs
 % X = vector or matrix to be normalized 
 % methods:
