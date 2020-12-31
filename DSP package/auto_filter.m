@@ -12,7 +12,6 @@ function y = auto_filter(sig, fs, fc, method)
 % start with using the Butterworth filter function in the DSP toolbox.
 % eventually I would like to implement a version of that function
 
-
 fnyq = fs/2;
 
 if fc > fnyq
