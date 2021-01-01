@@ -15,7 +15,7 @@ if(istable(sig))
 end
 
 if(method > 0)
-    % use in value if alpha is not supplied
+    % use min value if alpha is not supplied
     if ~exist('alpha','var') 
         alpha = min(sig);
     end
@@ -27,7 +27,9 @@ elseif(method < 0)
     if ~exist('alpha','var') 
         alpha = max(sig);
     end
-end
     trig = sig < abs(method) * alpha;
+end
+
+
 trig = 1 + find(diff(trig)>0);
 end
