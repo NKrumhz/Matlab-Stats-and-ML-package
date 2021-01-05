@@ -2,7 +2,9 @@ function [out] = audit(Arg, a, b)
 %to mimic the 'summary' function in R.
 % When feeding in numeric values this function will return the quantiles
 % specified with the standard statistics of min, median, mean, and max. 
-
+% Input
+% Arg = Input Data, either table or matrix 
+% a,b = specified quantile on [0,1]
 
 % turn argument into a table
 if isequal(class(Arg), 'double')
