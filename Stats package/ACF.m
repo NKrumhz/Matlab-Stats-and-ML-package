@@ -3,7 +3,7 @@ function acf = ACF(X,lag)
 %
 %Inputs
 % X = univariate numeric time series or vector 
-% lag = maximum lag at which to cacluate the acf
+% lag = maximum lag at which to calculate the acf
     
 % Input Checks
 if class(X) == 'timeseries'
