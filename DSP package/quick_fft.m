@@ -13,13 +13,15 @@ function ft = quick_fft(sig, freq, plot)
     L = length(sig);    % length of signal 
     t = (0:L-1)*T;      % Time vector
 
+    sig = detrend(sig); % detrend input 
+
     Y = fft(sig);
 
     P2 = abs(Y/L);
-    P1 = P2(1:L/2+1);
+    P1 = P2(1:floor(L/2+1));
     P1(2:end-1) = 2*P1(2:end-1);
 
-    f = freq*(0:(L/2))/L;
+    f = freq*(0:floor(L/2))/L;
 
     if plot == true
         plot(f, P1) 

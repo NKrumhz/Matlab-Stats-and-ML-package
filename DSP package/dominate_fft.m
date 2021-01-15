@@ -36,4 +36,7 @@ function maxf = dominate_fft(sig, freq, wl, ovlp )
         maxf(1,i) = find(ft(:,1) == max(ft(:,1)));
     end
     plot(x, maxf)
+    title('Dominant Frequency of X(t)')
+    xlabel('time (s)')
+    ylabel('frequency (Hz)')
 end
