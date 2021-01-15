@@ -2,21 +2,34 @@ function [idx,I] = Outlier(Data,method,k)
 % Syntax: idx = Outlier(Data,method)
 %
 % Long description
-[a,b] = dim(Data)
+%Inputs
+% Data = Input data vector
+% method = IQR method by Default, "Hampel" to use Hampel filter method
+%
+%Outputs
+% idx = indicies where the input data is greater or lower than the range
+% I = matrix of min and max range that specify what values are outliers
+[a,~] = dim(Data);
 
-if strcmp(method,'Grubbs')
+if ~exist('method','var')
+    method = "";
+end 
+
+method = lower(method);
+
+if strcmp(method,'grubbs')
     disp('Grubbs test for one outlier')
     disp('function not implemented yet')
-elseif strcmp(method,'Dixon')
+elseif strcmp(method,'dixon')
     disp('Dixon test for outliers')
     if a < 3 | a > 30
         error('Dixon test is best suited for small sample sizes only')
     end
     disp('function not implemented yet')
-elseif strcmp(method, 'Rosner')
+elseif strcmp(method, 'rosner')
     disp('Rosner test for k outliers')
     disp('function not implemented yet')
-elseif strcmp(method, 'Hampel')
+elseif strcmp(method, 'hampel')
     % Hempel filter
     % 3 standard deviations outisde Median absolute deviation
     xhat = median(Data);
