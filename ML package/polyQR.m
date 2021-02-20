@@ -31,6 +31,10 @@ function [C, norm2] = polyQR(X, nd)
 if nd == 0
     error('must be 1 or greater')
 end
+if a == 1
+    X = X';
+    [a,b] = size(X);
+end
 
 if b ==1
     l = nchoosek(b+nd,b)-1;
@@ -39,11 +43,13 @@ if b ==1
     y = 0:nd;
     xtend = ones(b,nd+1);
     outer = (X*xtend).^y;
-    [Q,R] = qr(outer);
-    alpha = eye(a,l+1);
-    C = Q(:,2:l+1);
-    norm2 = sum(abs(R .* alpha));
+    [Q,R] = qr(outer, 0);
+    C = Q(:, 2:l+1);
+    alpha = sparse(eye(a,l+1));
+    Z = Q .* alpha; 
+    norm2 = sum(R .* alpha);
     norm2 = [1,norm2];
+    
 else
     
 end
