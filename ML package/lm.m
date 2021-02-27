@@ -21,7 +21,10 @@ classdef lm
         % X = Training Data
         % y = Training Labels
         % zero = true if you want to force the regression through (0,0). 
-
+        
+            if ~ iscolumn(y) % check if y is a column vector
+                y = y';
+            end 
             m = length(y); % number of training examples
 
             if ~exist('zero','var') 
