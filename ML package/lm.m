@@ -137,7 +137,7 @@ classdef lm
                 j_in = j(s ~= i);
                 d.lm = lm(X(j_in,:),y,obj.rank(2));
                 costi = mean((fit_y(j_out) - predict(d.lm,X(j_out)).^2);
-                CV = CV + p.alpha * costi;
+                CV = CV + length(j_out)/n * costi;
             end
             
     end
