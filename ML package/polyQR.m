@@ -46,8 +46,8 @@ if b ==1
     [Q,R] = qr(outer, 0);
     C = Q(:, 2:l+1);
     alpha = sparse(eye(a,l+1));
-    Z = Q .* alpha; 
-    norm2 = sum(R .* alpha);
+    Z = Q .* diag(R)';
+    norm2 = sum(Z.^2);
     norm2 = [1,norm2];
     
 else
