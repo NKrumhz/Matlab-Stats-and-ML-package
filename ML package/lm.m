@@ -25,6 +25,7 @@ classdef lm
             if ~ iscolumn(y) % check if y is a column vector
                 y = y';
             end 
+
             m = length(y); % number of training examples
 
             if ~exist('zero','var') 
@@ -107,7 +108,15 @@ classdef lm
         % see glm.cv from boot library in R 
       
             % input error checking 
-            n = nrow(X);
+            [n,b] = size(X);
+            if b > n
+                X = X';
+                [n,~] = size(X);
+            end
+            
+            if ~ iscolumn(y) % check if y is a column vector
+                y = y';
+            end 
 
             if ~exist('K','var')
                 K = n;
