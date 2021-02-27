@@ -19,17 +19,24 @@ elseif strcmp(method, 'Rosner')
 elseif strcmp(method, 'Hampel')
     % Hempel filter
     % 3 standard deviations outisde Median absolute deviation
+    if ~exist('k','var') 
+        k = 3;
+    end
+
     xhat = median(Data);
     MAD = median(abs(Data - xhat));
-    I(1) = xhat - 3*MAD; 
-    I(2) = xhat + 3*MAD;
+    I(1) = xhat - k*MAD; 
+    I(2) = xhat + k*MAD;
 else
-    % IQR Method 
+    % IQR Method
+    if ~exist('k','var') 
+        k = 1.5;
+    end 
     q75 = quantl(Data,75);
     q25 = quantl(Data,25);
     IQR = q75 - q25;
-    I(1) = q25 - 1.5*IQR;
-    I(2) = q75 + 1.5*IQR;
+    I(1) = q25 - k*IQR;
+    I(2) = q75 + k*IQR;
     % Outliers are any points outside Interquartile range
 end
 
