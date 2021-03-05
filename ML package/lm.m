@@ -60,7 +60,7 @@ classdef lm
 
                 %compute p value from t statistic 
                 p = 2 * (1-student_cdf(abs(t),repelem(a-b,length(t))));
-                vars = {'coefs', 't value', 'Pr(>|t|)'};
+                vars = {'coefs', 't_Val', 'p_Val'};
                 fit.stats = table(theta,t',p','VariableNames',vars);
             else
                 disp("Need equal number of observations (X) and labels (y)")

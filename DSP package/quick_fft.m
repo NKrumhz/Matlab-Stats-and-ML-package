@@ -7,15 +7,21 @@ function ft = quick_fft(sig, freq, plot)
 % Inputs 
 %sig = input data 
 %freq = sampling frequency (Hz)
+%TL = transform length
 %plot = true or false if you want a plot of the data 
     
+    if ~exist('plot','var') 
+        plot = true;
+    end
+
     T = 1/freq;         % Sampling period
     L = length(sig);    % length of signal 
+    nfft = 2^nextpow2(L)% Transform Length
     t = (0:L-1)*T;      % Time vector
 
     sig = detrend(sig); % detrend input 
 
-    Y = fft(sig);
+    Y = fft(sig, nfft);
 
     P2 = abs(Y/L);
     P1 = P2(1:floor(L/2+1));
