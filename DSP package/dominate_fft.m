@@ -32,25 +32,16 @@ function maxf = dominate_fft(sig, freq, wl, ovlp, windo)
     % find number of separate windows 
     step = [1 : wl - (ovlp * wl/100) : n , n];
     N = length(step) -1;
-    x = linspace(0, n/freq, length = N);
+    x = linspace(0, n/freq, N);
     maxf = zeros(1,N);
-
-    % apply window 
-    if ~exist('windo','var') 
-        Twindow = ones(1,wl)
-        scale = 1; 
-    else
-        Twindow = windo(wl);
-        scale = wl / sum(Twindow);
-    end
 
     % loop through and find max frequency amplitude 
     for i = 1:N
-        sub_sig = sig(step(i):step(i+1) .* Twindow;
-        ft = quick_fft(scale * sub_sig .* Twindow, freq, false));
-        maxf(1,i) = find(ft(:,1) == max(ft(:,1)));
+        sub_sig = sig(step(i):step(i+1));
+        ft = quick_fft(sub_sig, freq, windo, false);
+        maxf(i) = ft(find(ft(:,2) == max(ft(:,2))),1);
     end
-    plot(x, maxf)
+    scatter(x, maxf)
     title('Dominant Frequency of X(t)')
     xlabel('time (s)')
     ylabel('frequency (Hz)')

@@ -1,4 +1,4 @@
-function ft = quick_fft(sig, freq, pt)
+function ft = quick_fft(sig, freq, windo, pt)
 %quick_fft - Description
 %
 % Syntax: ft = quick_fft(sig, freq, plot)
@@ -21,16 +21,24 @@ function ft = quick_fft(sig, freq, pt)
 
     T = 1/freq;          % Sampling period
     L = length(sig);     % length of signal 
-    nfft = 2^nextpow2(L);% Transform Length  
 
     sig = detrend(sig); % detrend input 
 
+    % get window 
+    if ~exist('windo','var') 
+        Twindow = ones(L,1);
+        scale = 1; 
+    else
+        Twindow = windo(L);
+        scale = L / sum(Twindow);
+    end
+
     %Use FFT function
-    Y = fft(sig, nfft);
+    Y = fft(sig .* Twindow);
 
     P2 = abs(Y/L);
-    P1 = P2(1:ceil(L/2+1));
-    P1(2:end-1) = 2*P1(2:end-1);
+    P1 = P2(1:floor(L/2+1));
+    P1(2:end-1) = scale * 2 * P1(2:end-1);
 
     f = freq*(0:floor(L/2))/L;
     ft = [f', P1];
