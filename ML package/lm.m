@@ -1,4 +1,4 @@
-classdef lm
+classdef lm < handle
     %UNTITLED Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -13,7 +13,7 @@ classdef lm
     end
     
     methods
-    function fit = lm(X, y, zero)
+        function fit = lm(X, y, zero)
         % Multivariate linear Regression
         %
         % Syntax: fit = lm(X, y, zero)
@@ -46,29 +46,24 @@ classdef lm
                     hx = X*theta-y;
                     fit.mse = mean(hx.^2);
 
+                fit.theta = theta;
+                fit.fitted= X * theta;
+                fit.residuals = y - fit.fitted; 
+                fit.rank = [b, zero];
+
                 %compute t statistic for regression line: 
-                sigma = sum(y.^2);
-                for i = 1:b
-                    temp = theta(i) * sum(X(:,i).*y);
-                    sigma = sigma - temp;
-                end
-                sigma = sqrt(sigma/(a-b));
-                SXX = sum(X.^2) - (sum(X).^2./m);
-                s_ehat = sigma./sqrt(SXX);
-                t = theta' ./ s_ehat;
-                t(1) = theta(1) * ((1/b)+(mean(X(:,1))/SXX(1)));
+                sigma = (sum(fit.residuals).^2)/(a-b); %error variance
+                s_ehat = sqrt(diag(sigma .* pinv(X' * X)));
+                t = theta' ./ s_ehat';
 
                 %compute p value from t statistic 
-                p = 2 * (1-student_cdf(abs(t),repelem(a-b,length(t))));
+                p = 2 * (1-student_cdf(abs(t),repelem(a-b,length(t)))); % we want 2 sided test
                 vars = {'coefs', 't_Val', 'p_Val'};
                 fit.stats = table(theta,t',p','VariableNames',vars);
             else
                 disp("Need equal number of observations (X) and labels (y)")
             end
-        fit.theta = theta;
-        fit.fitted= X * theta;
-        fit.residuals = fit.fitted - y; 
-        fit.rank = [b, zero];
+
         end
         
         function yprime = predict(obj,newX)
@@ -111,7 +106,7 @@ classdef lm
             [n,b] = size(X);
             if b > n
                 X = X';
-                [n,~] = size(X);
+                [n,b] = size(X);
             end
             
             if ~ iscolumn(y) % check if y is a column vector
@@ -132,14 +127,21 @@ classdef lm
             ms = max(s);
             CV = 0;
             j = 1:n;
+            weight = zeros(1,ms);
+            thetaM = zeros(obj.rank(1),ms);
+            % Main Loop 
             for i = 1:ms
                 j_out = j(s == i);
                 j_in = j(s ~= i);
-                d.lm = lm(X(j_in,:),y,obj.rank(2));
-                costi = mean((fit_y(j_out) - predict(d.lm,X(j_out)).^2);
+                d_lm = lm(X(j_in,:),y(j_in),obj.rank(2));
+                weight(i) = d_lm.mse;
+                thetaM(:,i) = d_lm.theta;
+                costi = mean((fit_y(j_out) - predict(d_lm,X(j_out,:)).^2));
                 CV = CV + length(j_out)/n * costi;
             end
-            
+        
+            obj.theta = sum(thetaM .* weight, 2) / sum(weight);
+        end
     end
 end
 
