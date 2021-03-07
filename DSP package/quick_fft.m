@@ -10,8 +10,13 @@ function ft = quick_fft(sig, freq, pt)
 %TL = transform length
 %plot = true or false if you want a plot of the data 
     
+    % inpuc checking 
     if ~exist('pt','var') 
         pt = true;
+    end
+
+    if isrow(sig)
+        sig = sig';
     end
 
     T = 1/freq;          % Sampling period
@@ -28,10 +33,10 @@ function ft = quick_fft(sig, freq, pt)
     P1(2:end-1) = 2*P1(2:end-1);
 
     f = freq*(0:floor(L/2))/L;
-    ft = [f', P1'];
+    ft = [f', P1];
 
     if pt == true
-        plot(f', P1') 
+        plot(f', P1) 
         title('Spectrum of X(t)')
         xlabel('f (Hz)')
         ylabel('|P1(f)|')

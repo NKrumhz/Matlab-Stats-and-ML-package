@@ -1,4 +1,4 @@
-function maxf = dominate_fft(sig, freq, wl, ovlp )
+function maxf = dominate_fft(sig, freq, wl, ovlp, windo)
 %dominate_fft - Description
 %
 % Syntax: maxf = dominate_fft(sig, freq, wl, ovlp)
@@ -9,6 +9,7 @@ function maxf = dominate_fft(sig, freq, wl, ovlp )
 % freq = sampling frequency (Hz)  
 % wl = window length (samples)
 % ovlp = window overlap percentage [0-100)
+% windo = window function to use instead of square window (function input @)
    
 
     % input checking 
@@ -17,6 +18,10 @@ function maxf = dominate_fft(sig, freq, wl, ovlp )
         disp("window overlap cannot be 100% or above")
     end
 
+    if isrow(sig)
+        sig = sig';
+    end
+    
     n = length(sig);
 
     if wl > n 
@@ -30,9 +35,19 @@ function maxf = dominate_fft(sig, freq, wl, ovlp )
     x = linspace(0, n/freq, length = N);
     maxf = zeros(1,N);
 
+    % apply window 
+    if ~exist('windo','var') 
+        Twindow = ones(1,wl)
+        scale = 1; 
+    else
+        Twindow = windo(wl);
+        scale = wl / sum(Twindow);
+    end
+
     % loop through and find max frequency amplitude 
     for i = 1:N
-        ft = quick_fft(sig(step(i):step(i+1), freq, false));
+        sub_sig = sig(step(i):step(i+1) .* Twindow;
+        ft = quick_fft(sub_sig .* Twindow, freq, false));
         maxf(1,i) = find(ft(:,1) == max(ft(:,1)));
     end
     plot(x, maxf)
