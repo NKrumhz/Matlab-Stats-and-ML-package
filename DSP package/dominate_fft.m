@@ -47,7 +47,7 @@ function maxf = dominate_fft(sig, freq, wl, ovlp, windo)
     % loop through and find max frequency amplitude 
     for i = 1:N
         sub_sig = sig(step(i):step(i+1) .* Twindow;
-        ft = quick_fft(sub_sig .* Twindow, freq, false));
+        ft = quick_fft(scale * sub_sig .* Twindow, freq, false));
         maxf(1,i) = find(ft(:,1) == max(ft(:,1)));
     end
     plot(x, maxf)
