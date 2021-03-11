@@ -52,14 +52,16 @@ classdef lm < handle
                 fit.rank = [b, zero];
 
                 %compute t statistic for regression line: 
-                sigma = (sum(fit.residuals).^2)/(a-b); %error variance
-                s_ehat = sqrt(diag(sigma .* pinv(X' * X)));
-                t = theta' ./ s_ehat';
+                rss = sum((fit.residuals).^2);
+                resvar = rss/(a-b); %error variance
+                s_ehat = sqrt(diag(pinv(X' * X)) .* resvar);
+                t = theta ./ s_ehat;
 
                 %compute p value from t statistic 
-                p = 2 * (1-student_cdf(abs(t),repelem(a-b,length(t)))); % we want 2 sided test
+                p = 2 * (1-student_cdf(abs(t),repelem(a-b,b)')); % we want 2 sided test
                 vars = {'coefs', 't_Val', 'p_Val'};
-                fit.stats = table(theta,t',p','VariableNames',vars);
+                fit.stats = table(theta, t, p,'VariableNames',vars);
+
             else
                 disp("Need equal number of observations (X) and labels (y)")
             end
