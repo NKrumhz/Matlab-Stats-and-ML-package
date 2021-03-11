@@ -12,6 +12,15 @@ if nd <=0
     error('Degrees of freedom must be positive.');
 end
 
+
+% input checking 
+if ~iscolumn(t)
+    t = t';
+end
+if ~iscolumn(nd)
+    nd = nd';
+end
+
 %check for Nan's 
 if any( not(isfinite(t(:))) | not(isfinite(nd(:))) )
     sel = find(isfinite(t) & isfinite(nd));
