@@ -95,7 +95,20 @@ classdef lm < handle
             end
         end
         
-        
+        function qqplot(obj)
+            st_res = sort(standardize(obj.residuals, 'norm'));
+            TQ_norm = sort(randn(length(obj.residuals),1));
+            TQ_min = TQ_norm(1);
+            TQ_max = TQ_norm(end);
+            scatter(TQ_norm, st_res);
+            hold on 
+            plot([TQ_min TQ_max], [TQ_min TQ_max], 'r--')
+            title("Normal Q-Q")
+            xlabel('Theoretical Quantiles')
+            ylabel('Standardized residuals')
+            hold off
+        end
+
         function CV = cv_folds(obj, X, y, K)
         %lm_cv - Description
         %
